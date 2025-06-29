@@ -17,7 +17,7 @@ ROKU2_IP = "192.168.1.8"
 HTML = '''
 <!DOCTYPE html>
 <html>
-<head><title>Choyku - Multi Roku Remote</title></head>
+<head><title>ChoyRoku</title></head>
 <body>
   <h2>Choyku: Multi Roku Remote</h2>
 
