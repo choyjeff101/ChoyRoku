@@ -44,7 +44,7 @@ ROKU2_IP = "192.x.x.x"    # Replace with your second Roku's IP
 2. Update your YouTube playlist ID in the `launch_playlist` function:
 
 ```python
-playlist_id = "PLob1mZcVWOagE6k45H8o_FndW1eqNht00"  # Replace with your playlist ID
+playlist_id = ""  # Replace with your playlist ID
 ```
 
 3. Change the secret key for security:
