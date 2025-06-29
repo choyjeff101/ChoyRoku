@@ -37,8 +37,8 @@ pip install -r requirements.txt
 1. Update the Roku IP addresses in `ChoyRoku.py`:
 
 ```python
-ROKU1_IP = "192.168.1.129"  # Replace with your first Roku's IP
-ROKU2_IP = "192.168.1.8"    # Replace with your second Roku's IP
+ROKU1_IP = "192.x.x.x"  # Replace with your first Roku's IP
+ROKU2_IP = "192.x.x.x"    # Replace with your second Roku's IP
 ```
 
 2. Update your YouTube playlist ID in the `launch_playlist` function:
