@@ -1,0 +1,87 @@
+##SERVICE MANAGEMENT COMMANDS
+
+## Enable/Disable Service
+# Enable service to start on boot
+sudo systemctl enable choyroku.service
+
+# Disable service from starting on boot
+sudo systemctl disable choyroku.service
+
+## Start/Stop/Restart Service
+# Start the service
+sudo systemctl start choyroku.service
+
+# Stop the service
+sudo systemctl stop choyroku.service
+
+# Restart the service
+sudo systemctl restart choyroku.service
+
+# Reload configuration (if you edit the service file)
+sudo systemctl reload choyroku.service
+
+## Check Service Status
+# Check if service is running
+sudo systemctl status choyroku.service
+
+# Check if service is enabled
+sudo systemctl is-enabled choyroku.service
+
+# Check if service is active
+sudo systemctl is-active choyroku.servicee
+
+######################################################################################
+##LOGGING COMMANDS
+
+##View Service Logs
+# View recent logs
+journalctl -u choyroku.service
+
+# View logs with timestamps
+journalctl -u choyroku.service --no-pager
+
+# View only the last 50 lines
+journalctl -u choyroku.service -n 50
+
+# Follow logs in real-time
+journalctl -u choyroku.service -f
+
+# View logs since last boot
+journalctl -u choyroku.service -b
+
+# View logs for a specific time period
+journalctl -u choyroku.service --since "2024-01-01 10:00:00" --until "2024-01-01 11:00:00"
+
+
+##View Error Logs
+# View only error messages
+journalctl -u choyroku.service -p err
+
+# View logs with priority error and above
+journalctl -u choyroku.service -p 3
+
+######################################################################################
+##Service Configuration
+
+
+#Reload Systemd
+sudo systemctl daemon-reload
+
+##Edit Service File
+# Reload systemd after editing service file
+sudo systemctl daemon-reload
+
+######################################################################################
+##Troubleshooting Commands
+
+##Check Dependencies
+# Check what the service depends on
+systemctl list-dependencies choyroku.service
+
+# Check what depends on this service
+systemctl list-dependencies --reverse choyroku.service
+
+##Reset Failed Service
+# Reset a failed service
+sudo systemctl reset-failed choyroku.service
+
