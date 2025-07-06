@@ -1,6 +1,6 @@
 #!/bin/bash
-cd /Users/jeffchoy/Development/ChoyRoku
+cd /home/jeff/ChoyRoku
 # Uncomment the next line if you use a virtual environment
 source venv/bin/activate
 
-exec python3 ChoyRoku.py
+exec gunicorn --config gunicorn.conf.py ChoyRoku:app
