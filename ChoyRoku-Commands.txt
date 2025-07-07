@@ -2,7 +2,7 @@
 
 ## Enable/Disable Service
 # Enable service to start on boot
-sudo systemctl enable choyroku.service
+sudo systeemctl enable choyroku.service
 
 # Disable service from starting on boot
 sudo systemctl disable choyroku.service
