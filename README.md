@@ -5,10 +5,10 @@ A Flask web application that allows you to control multiple Roku devices from a 
 ## Features
 
 - **Multi-device support**: Control multiple Roku devices from one interface
-- **Automatic device discovery**: Automatically finds Roku devices on your network
+- **Automatic device discovery**: Uses SSDP to automatically find Roku devices on your network
 - **Manual device configuration**: Fallback to manually configured IP addresses
 - **Remote control**: Send key commands (Home, Up, Down, Left, Right, Select, Back, Play, Pause, Volume)
-- **App launching**: Launch YouTube and other apps directly
+- **App launching**: Launch YouTube and Netflix directly
 - **Playlist support**: Launch custom YouTube playlists
 - **Mobile-friendly interface**: Responsive design that works on phones and tablets
 - **Real-time status monitoring**: Check connection status and device availability
@@ -16,8 +16,8 @@ A Flask web application that allows you to control multiple Roku devices from a 
 ## Requirements
 
 - Python 3.7+
-- Flask
-- requests
+- Flask 2.3.3
+- requests 2.31.0
 
 ## Quick Setup
 
@@ -31,7 +31,7 @@ This will:
 
 - Check and install dependencies
 - Discover Roku devices on your network
-- Configure the application
+- Configure the application automatically
 - Create startup scripts
 - Provide access instructions
 
@@ -43,7 +43,7 @@ This will:
 pip install -r requirements.txt
 ```
 
-2. **Discover Roku devices**:
+2. **Discover Roku devices** (optional):
 
 ```bash
 python3 find_rokus.py
@@ -92,7 +92,7 @@ python3 ChoyRoku.py
    - Navigation: Up, Down, Left, Right, Select
    - Media: Play, Pause, Back, Home
    - Volume: Volume Up, Volume Down
-   - Apps: Launch YouTube, Netflix, or custom playlist
+   - Apps: Launch YouTube, Netflix
 
 ## Network Requirements
 
@@ -173,7 +173,7 @@ curl http://[roku-ip]:8060/query/device-info
 
 ## Security Notes
 
-- Change the Flask secret key before deploying
+- Change the Flask secret key in `ChoyRoku.py` line 16 before deploying
 - Consider adding authentication for production use
 - The application runs on all interfaces (0.0.0.0) - restrict access as needed
 - Use HTTPS in production environments
@@ -182,42 +182,49 @@ curl http://[roku-ip]:8060/query/device-info
 
 ### Custom App IDs
 
-Add more apps to the launch section:
+The application currently supports these apps:
 
 ```python
-# Common Roku App IDs
-NETFLIX_APP_ID = "12"
-YOUTUBE_APP_ID = "837"
-HULU_APP_ID = "2285"
+# Current app IDs in ChoyRoku.py
+YOUTUBE_APP_ID = "837"    # Line 124
+NETFLIX_APP_ID = "12"     # Line 127
 ```
 
-### Custom Playlist
+To add more apps, modify the HTML template in `ChoyRoku.py` around lines 124-132.
 
-Update your YouTube playlist ID:
+### Adding More Roku Devices
 
-```python
-playlist_id = "YOUR_PLAYLIST_ID_HERE"
-```
-
-### Multiple Roku Devices
-
-Add more Roku devices:
-
-```python
-ROKU1_IP = "192.168.1.100"
-ROKU2_IP = "192.168.1.101"
-ROKU3_IP = "192.168.1.102"
-```
+To support more than 2 Roku devices, you'll need to modify the `discover_rokus()` function in `ChoyRoku.py` to include additional IP addresses.
 
 ## API Endpoints
 
-- `GET /` - Main interface
-- `POST /select` - Select Roku device
-- `POST /send` - Send key command
-- `POST /launch` - Launch app
-- `POST /launch_playlist` - Launch YouTube playlist
-- `GET /status` - Health check
+- `GET /` - Main web interface
+- `POST /select` - Select a Roku device
+- `POST /send` - Send a key command to the selected Roku
+- `POST /launch` - Launch an app on the selected Roku
 
-## License
+- `GET /status` - Health check endpoint
 
-This project is open source and available under the MIT License.
+## File Structure
+
+```
+ChoyRoku/
+├── ChoyRoku.py          # Main Flask application
+├── setup.py             # Automated setup script
+├── find_rokus.py        # Roku device discovery tool
+├── requirements.txt     # Python dependencies
+├── start_choyroku.sh    # Startup script (created by setup.py)
+└── README.md           # This file
+```
+
+## Development
+
+The application uses:
+
+- **Flask** for the web framework
+- **requests** for HTTP communication with Roku devices
+- **socket** for SSDP device discovery
+- **re** for regular expressions
+- **logging** for debug output
+
+All configuration is embedded in `ChoyRoku.py` and can be modified directly or through the `setup.py` script.

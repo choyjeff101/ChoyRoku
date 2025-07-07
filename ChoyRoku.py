@@ -130,9 +130,7 @@ HTML = '''
       <input type="hidden" name="app_id" value="12">
       <button type="submit" class="app-btn">📺 Netflix</button>
     </form>
-    <form method="post" action="/launch_playlist">
-      <button type="submit" class="app-btn">🎵 My Playlist</button>
-    </form>
+
   </div>
 
   {% if error_message %}
@@ -287,25 +285,7 @@ def launch():
         logger.error(f"Error launching app {app_id} on {roku_ip}: {e}")
         return jsonify({"error": f"Error launching app {app_id}: {str(e)}"}), 500
 
-@app.route("/launch_playlist", methods=["POST"])
-def launch_playlist():
-    roku_ip = session.get("roku_ip")
-    if not roku_ip:
-        return jsonify({"error": "No Roku selected"}), 400
-    
-    try:
-        playlist_id = "PLob1mZcVWOagE6k45H8o_FndW1eqNht00"  # Replace with your actual playlist ID
-        logger.info(f"Launching YouTube playlist {playlist_id} on {roku_ip}")
-        r = requests.post(f"http://{roku_ip}:8060/launch/837?contentID={playlist_id}", timeout=5)
-        if r.status_code in [200, 204]:
-            logger.info(f"Successfully launched playlist on {roku_ip}")
-            return jsonify({"success": True, "message": f"Launched YouTube playlist"}), 200
-        else:
-            logger.error(f"Failed to launch playlist on {roku_ip}. Status: {r.status_code}")
-            return jsonify({"error": f"Failed to launch playlist. Status: {r.status_code}"}), 500
-    except Exception as e:
-        logger.error(f"Error launching playlist on {roku_ip}: {e}")
-        return jsonify({"error": f"Error launching playlist: {str(e)}"}), 500
+
 
 @app.route("/status", methods=["GET"])
 def status():
