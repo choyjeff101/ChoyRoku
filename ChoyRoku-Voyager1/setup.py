@@ -38,8 +38,8 @@ def check_dependencies():
     
     return True
 
-def get_raspberry_pi_ip():
-    """Get the IP address of the Raspberry Pi"""
+def get_windows10_ip():
+    """Get the IP address of the Windows 10 machine"""
     print("\n🌐 Network Configuration:")
     print("=" * 30)
     
@@ -52,18 +52,18 @@ def get_raspberry_pi_ip():
         
         print(f"Current device IP: {local_ip}")
         
-        # Ask user to confirm if this is the Raspberry Pi
-        response = input(f"Is this the Raspberry Pi (pi-choy)? (y/n): ").lower().strip()
+        # Ask user to confirm if this is the Windows 10 machine
+        response = input(f"Is this the Windows 10 machine (voyager1)? (y/n): ").lower().strip()
         if response in ['y', 'yes']:
             return local_ip
         else:
-            pi_ip = input("Enter the Raspberry Pi IP address: ").strip()
-            return pi_ip
+            win_ip = input("Enter the Windows 10 machine IP address: ").strip()
+            return win_ip
             
     except Exception as e:
         print(f"Could not determine IP: {e}")
-        pi_ip = input("Enter the Raspberry Pi IP address: ").strip()
-        return pi_ip
+        win_ip = input("Enter the Windows 10 machine IP address: ").strip()
+        return win_ip
 
 def test_roku_connection(roku_ip):
     """Test connection to a Roku device"""
@@ -109,7 +109,7 @@ def configure_roku_ips():
     
     return roku1_ip, roku2_ip
 
-def update_config(pi_ip, roku1_ip, roku2_ip):
+def update_config(win_ip, roku1_ip, roku2_ip):
     """Update the ChoyRoku.py configuration"""
     print("\n⚙️  Updating configuration...")
     
@@ -137,58 +137,54 @@ def update_config(pi_ip, roku1_ip, roku2_ip):
         print(f"❌ Failed to update configuration: {e}")
         return False
 
-def create_startup_script(pi_ip):
-    """Create a startup script for the Raspberry Pi"""
+def create_startup_script(win_ip):
+    """Create a startup script for Windows 10"""
     print("\n📝 Creating startup script...")
     
-    startup_script = f"""#!/bin/bash
-# ChoyRoku Startup Script for Raspberry Pi
-# Run this script to start the ChoyRoku server
+    startup_script = f"""@echo off
+REM ChoyRoku Startup Script for Windows 10
+REM Run this script to start the ChoyRoku server
 
-cd /home/pi/ChoyRoku  # Adjust path as needed
-python3 ChoyRoku.py
+cd /d %~dp0
+python ChoyRoku.py
 """
     
     try:
-        with open('start_choyroku.sh', 'w') as f:
+        with open('start_choyroku.bat', 'w') as f:
             f.write(startup_script)
-        
-        # Make it executable
-        os.chmod('start_choyroku.sh', 0o755)
-        print("✅ Startup script created: start_choyroku.sh")
+        print("✅ Startup script created: start_choyroku.bat")
         return True
         
     except Exception as e:
         print(f"❌ Failed to create startup script: {e}")
         return False
 
-def print_instructions(pi_ip):
+def print_instructions(win_ip):
     """Print setup instructions"""
     print("\n" + "=" * 60)
     print("🎉 SETUP COMPLETE!")
     print("=" * 60)
     
     print(f"\n📱 To access ChoyRoku from your iPhone (uranus):")
-    print(f"   1. Make sure your iPhone is on the same network as pi-choy")
-    print(f"   2. Open Safari and go to: http://{pi_ip}:8000")
+    print(f"   1. Make sure your iPhone is on the same network as voyager1")
+    print(f"   2. Open Safari and go to: http://{win_ip}:8000")
     print(f"   3. Select your Roku device from the dropdown")
     print(f"   4. Use the control buttons to control your Roku")
     
-    print(f"\n🖥️  To start the server on Raspberry Pi (pi-choy):")
-    print(f"   1. Copy ChoyRoku.py to your Raspberry Pi")
-    print(f"   2. Run: python3 ChoyRoku.py")
-    print(f"   3. Or use the startup script: ./start_choyroku.sh")
+    print(f"\n🖥️  To start the server on Windows 10 (voyager1):")
+    print(f"   1. Run: python ChoyRoku.py")
+    print(f"   2. Or use the startup script: start_choyroku.bat")
     
     print(f"\n🔧 Troubleshooting:")
-    print(f"   • If connection fails, check that pi-choy and uranus are on the same network")
+    print(f"   • If connection fails, check that voyager1 and uranus are on the same network")
     print(f"   • Verify the Roku IP addresses are correct")
     print(f"   • Make sure port 8000 is not blocked by firewall")
-    print(f"   • Run 'python3 find_rokus.py' to rediscover Roku devices")
+    print(f"   • Run 'python find_rokus.py' to rediscover Roku devices")
     
     print(f"\n📞 Access URLs:")
     print(f"   • Local access: http://localhost:8000")
-    print(f"   • Network access: http://{pi_ip}:8000")
-    print(f"   • Status check: http://{pi_ip}:8000/status")
+    print(f"   • Network access: http://{win_ip}:8000")
+    print(f"   • Status check: http://{win_ip}:8000/status")
 
 def main():
     print("🎯 ChoyRoku Setup Wizard")
@@ -199,28 +195,20 @@ def main():
         print("❌ Setup failed due to missing dependencies")
         return
     
-    # Get Raspberry Pi IP
-    pi_ip = get_raspberry_pi_ip()
-    if not pi_ip:
-        print("❌ Setup failed: No Raspberry Pi IP provided")
-        return
+    # Get Windows 10 IP
+    win_ip = get_windows10_ip()
     
     # Configure Roku IPs
     roku1_ip, roku2_ip = configure_roku_ips()
-    if not roku1_ip and not roku2_ip:
-        print("❌ Setup failed: No Roku devices configured")
-        return
     
-    # Update configuration
-    if not update_config(pi_ip, roku1_ip, roku2_ip):
-        print("❌ Setup failed: Could not update configuration")
-        return
+    # Update config
+    update_config(win_ip, roku1_ip, roku2_ip)
     
     # Create startup script
-    create_startup_script(pi_ip)
+    create_startup_script(win_ip)
     
     # Print instructions
-    print_instructions(pi_ip)
+    print_instructions(win_ip)
 
 if __name__ == "__main__":
     main() 
