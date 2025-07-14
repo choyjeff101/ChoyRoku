@@ -16,8 +16,8 @@ app = Flask(__name__)
 app.secret_key = "change_this_to_something_secure"
 
 # Define manual Roku IPs - Update these with your actual Roku IP addresses
-ROKU1_IP = "192.168.1.4"
-ROKU2_IP = "192.168.1.8"  # Add second Roku if you have one
+ROKU1_IP = "192.168.1.129"
+ROKU2_IP = "192.168.1.8"
 
 # Network configuration
 FLASK_HOST = "0.0.0.0"  # Listen on all interfaces
