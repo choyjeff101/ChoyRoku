@@ -1,3 +1,11 @@
+# ChoyRoku - Voyager1 Edition
+
+**Voyager1/Windows 10 Configuration**
+
+- This version is configured for the Windows 10 machine 'voyager1' on LAN 'choy'.
+- The default Roku device IPs are set to `192.168.1.x` (replace 'x' with your Roku's actual address).
+- If you need to change the Roku IPs, edit `ROKU1_IP` and `ROKU2_IP` in `ChoyRoku.py`.
+
 # ChoyRoku - Multi Roku Remote Control
 
 A Flask web application that allows you to control multiple Roku devices from a single web interface.
